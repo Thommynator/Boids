@@ -5,12 +5,10 @@ using UnityEngine;
 public class SpaceInitializer : MonoBehaviour
 {
 
-    public MovementSpace movementSpace;
-
     void Start()
     {
-        transform.position = movementSpace.center;
-        transform.localScale = movementSpace.size;
+        transform.position = Settings.current.centerPosition;
+        transform.localScale = Settings.current.moveableSpace;
     }
 
 
