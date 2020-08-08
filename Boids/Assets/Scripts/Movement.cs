@@ -12,6 +12,8 @@ public class Movement : MonoBehaviour
 
     public bool isAvoidingWalls;
     public bool isAvoidingOthers;
+    public bool isAligningWithOthers;
+    public bool isUsingCohesion;
 
     private Vector3 steeringForce;
     private Rigidbody body;
@@ -21,45 +23,54 @@ public class Movement : MonoBehaviour
     private Vector3 velocityDifference;
 
     // distance around target within the boid starts to slow down (approach target)
-    private float slowDownDistance = 15f;
+    private float slowDownDistance = 10f;
+
+    private GameObject swarm;
 
     void Start()
     {
         body = GetComponent<Rigidbody>();
+        swarm = GameObject.Find("Swarm");
     }
 
     void FixedUpdate()
     {
-        // targetPosition = GetMousePosition();
-        targetPosition = transform.position + RandomWalkOffset(20, 2);
+        RuleConfigurator ruleConfigurator = swarm.GetComponent<RuleConfigurator>();
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targetPosition, Vector3.up), 0.08f);
-
+        if (ruleConfigurator.doFollowMouse)
+        {
+            targetPosition = GetMousePosition();
+        }
+        else
+        {
+            targetPosition = transform.position + StraightWalkOffset();
+        }
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targetPosition - transform.position, Vector3.up), 0.08f);
 
         body.AddForce(Seek(targetPosition, true));
 
-        if (isAvoidingOthers)
+
+        if (ruleConfigurator.isAvoidingWalls)
         {
-            body.AddForce(SeparateFromNeighbors());
+            body.AddForce(ruleConfigurator.avoidWallsScale * AvoidWalls());
         }
-        if (isAvoidingWalls)
+        if (ruleConfigurator.isAvoidingNeighbors)
         {
-            body.AddForce(AvoidWalls());
+            body.AddForce(ruleConfigurator.avoidNeighborsScale * AvoidNeighbors());
+        }
+        if (ruleConfigurator.isAligningWithNeighbors)
+        {
+            body.AddForce(ruleConfigurator.alignWithNeighborsScale * AlignWithNeighbors());
+        }
+        if (ruleConfigurator.isUsingCohesion)
+        {
+            body.AddForce(ruleConfigurator.useCohesionScale * Cohesion());
         }
     }
 
     private Vector3 StraightWalkOffset()
     {
         return body.velocity.normalized * maxSpeed;
-    }
-
-    // Generates a circle with radius r in front of the boid in a given distance and picks a random position on this circle. 
-    private Vector3 RandomWalkOffset(float distance, float radius)
-    {
-        float randomAngleInRad = Random.Range(0, 360) * Mathf.Deg2Rad;
-        // TODO adapt from circle to sphere for 3D
-        Vector3 positionOnCircle = new Vector3(Mathf.Cos(randomAngleInRad), 0, Mathf.Sin(randomAngleInRad)) * radius;
-        return body.velocity.normalized * distance + positionOnCircle;
     }
 
     private Vector3 AvoidWalls()
@@ -113,7 +124,7 @@ public class Movement : MonoBehaviour
         return Vector3.zero;
     }
 
-    private Vector3 SeparateFromNeighbors()
+    private Vector3 AvoidNeighbors()
     {
         List<Transform> neighbors = GetComponent<NeighborFinder>().GetNeighbors();
         Vector3 separationVector = Vector3.zero;
@@ -129,8 +140,49 @@ public class Movement : MonoBehaviour
             separationVector /= neighbors.Count;
         }
 
-        Debug.DrawLine(transform.position, transform.position + separationVector * maxSpeed);
-        return Seek(transform.position + separationVector * maxSpeed, false);
+        Vector3 target = transform.position + separationVector * maxSpeed;
+        Debug.DrawLine(transform.position, target);
+        return Seek(target, false);
+    }
+
+    private Vector3 AlignWithNeighbors()
+    {
+        List<Transform> neighbors = GetComponent<NeighborFinder>().GetNeighbors();
+        Vector3 averageVelocity = Vector3.zero;
+        foreach (var boid in neighbors)
+        {
+            averageVelocity += boid.GetComponent<Rigidbody>().velocity;
+        }
+
+        int amountOfNeighbors = neighbors.Count;
+        if (amountOfNeighbors > 0)
+        {
+            averageVelocity /= neighbors.Count;
+        }
+
+        Vector3 target = transform.position + averageVelocity;
+        Debug.DrawLine(transform.position, target, Color.green);
+        return Seek(target, false);
+    }
+
+    private Vector3 Cohesion()
+    {
+        List<Transform> neighbors = GetComponent<NeighborFinder>().GetNeighbors();
+        Vector3 center = Vector3.zero;
+        foreach (var boid in neighbors)
+        {
+            center += boid.position;
+        }
+
+        int amountOfNeighbors = neighbors.Count;
+        if (amountOfNeighbors > 0)
+        {
+            center /= neighbors.Count;
+        }
+
+        Vector3 target = center;
+        Debug.DrawLine(transform.position, target, Color.blue);
+        return Seek(target, false);
     }
 
     private Vector3 Seek(Vector3 target, bool approachSlowly)

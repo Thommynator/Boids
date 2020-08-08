@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boid: {fileID: 4867185707913731411, guid: c774ec3bd352f9b48a01c59b83593899, type: 3}
-  swarmSize: 50
+  swarmSize: 100
 --- !u!4 &845849026
 Transform:
   m_ObjectHideFlags: 0
@@ -408,9 +408,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 845849024}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd6c012ca93409b48a3ebf5351d907b8, type: 3}
+  m_Script: {fileID: 11500000, guid: 307a45d9cd82c2f4491f5da638969e94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  avoidWallsScale: 2
+  isAvoidingWalls: 1
+  avoidNeighborsScale: 1
+  isAvoidingNeighbors: 1
+  alignWithNeighborsScale: 0.5
+  isAligningWithNeighbors: 1
+  useCohesionScale: 0.25
+  isUsingCohesion: 1
+  doFollowMouse: 1
   swarm: {fileID: 845849024}
 --- !u!1 &885407811
 GameObject:

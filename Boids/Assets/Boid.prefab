@@ -216,9 +216,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 15
-  maxSteeringForce: 20
+  maxSteeringForce: 10
   isAvoidingWalls: 1
-  isSeparatingFromOthers: 1
+  isAvoidingOthers: 1
+  isAligningWithOthers: 1
+  isUsingCohesion: 1
 --- !u!54 &2406226488527727980
 Rigidbody:
   m_ObjectHideFlags: 0
