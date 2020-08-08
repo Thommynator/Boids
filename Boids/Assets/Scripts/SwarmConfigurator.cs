@@ -2,8 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RuleConfigurator : MonoBehaviour
+public class SwarmConfigurator : MonoBehaviour
 {
+
+
+    [Range(1, 1000)]
+    public int swarmSize;
+
+    [Range(0.0f, 30.0f)]
+    public float maxSpeed;
+
+    [Range(0.0f, 30.0f)]
+    public float maxSteeringForce;
+
+    [Range(0,30)]
+    public float neighborSearchRadius;
+
+
     [Range(0.0f, 5.0f)]
     public float avoidWallsScale;
     public bool isAvoidingWalls = true;
@@ -20,6 +35,5 @@ public class RuleConfigurator : MonoBehaviour
     public float useCohesionScale;
     public bool isUsingCohesion = true;
 
-    public bool doFollowMouse = true;
     public GameObject swarm;
 }

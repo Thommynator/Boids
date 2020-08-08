@@ -5,7 +5,6 @@ using static Settings;
 
 public class Movement : MonoBehaviour
 {
-    public float maxSpeed;
 
     // defines how fast a Boid can steer (change direction)
     public float maxSteeringForce;
@@ -15,12 +14,14 @@ public class Movement : MonoBehaviour
     public bool isAligningWithOthers;
     public bool isUsingCohesion;
 
+    private float maxSpeed;
     private Vector3 steeringForce;
+    private Vector3 velocityDifference;
+
     private Rigidbody body;
 
-    Vector3 targetPosition = Vector3.zero;
+    private Vector3 targetPosition = Vector3.zero;
 
-    private Vector3 velocityDifference;
 
     // distance around target within the boid starts to slow down (approach target)
     private float slowDownDistance = 10f;
@@ -35,9 +36,11 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate()
     {
-        RuleConfigurator ruleConfigurator = swarm.GetComponent<RuleConfigurator>();
+        SwarmConfigurator configurator = Settings.current.GetComponent<SwarmConfigurator>();
+        maxSpeed = configurator.maxSpeed;
+        maxSteeringForce = configurator.maxSteeringForce;
 
-        if (ruleConfigurator.doFollowMouse)
+        if (Input.GetMouseButton(0))
         {
             targetPosition = GetMousePosition();
         }
@@ -50,21 +53,21 @@ public class Movement : MonoBehaviour
         body.AddForce(Seek(targetPosition, true));
 
 
-        if (ruleConfigurator.isAvoidingWalls)
+        if (configurator.isAvoidingWalls)
         {
-            body.AddForce(ruleConfigurator.avoidWallsScale * AvoidWalls());
+            body.AddForce(configurator.avoidWallsScale * AvoidWalls());
         }
-        if (ruleConfigurator.isAvoidingNeighbors)
+        if (configurator.isAvoidingNeighbors)
         {
-            body.AddForce(ruleConfigurator.avoidNeighborsScale * AvoidNeighbors());
+            body.AddForce(configurator.avoidNeighborsScale * AvoidNeighbors());
         }
-        if (ruleConfigurator.isAligningWithNeighbors)
+        if (configurator.isAligningWithNeighbors)
         {
-            body.AddForce(ruleConfigurator.alignWithNeighborsScale * AlignWithNeighbors());
+            body.AddForce(configurator.alignWithNeighborsScale * AlignWithNeighbors());
         }
-        if (ruleConfigurator.isUsingCohesion)
+        if (configurator.isUsingCohesion)
         {
-            body.AddForce(ruleConfigurator.useCohesionScale * Cohesion());
+            body.AddForce(configurator.useCohesionScale * Cohesion());
         }
     }
 
@@ -118,7 +121,7 @@ public class Movement : MonoBehaviour
 
         if (isOutside)
         {
-            Debug.DrawLine(transform.position, desiredPosition);
+            Debug.DrawLine(transform.position, desiredPosition, Color.red);
             return Seek(desiredPosition, false);
         }
         return Vector3.zero;
@@ -141,7 +144,7 @@ public class Movement : MonoBehaviour
         }
 
         Vector3 target = transform.position + separationVector * maxSpeed;
-        Debug.DrawLine(transform.position, target);
+        Debug.DrawLine(transform.position, target, new Color(128, 0, 0));
         return Seek(target, false);
     }
 
@@ -181,7 +184,7 @@ public class Movement : MonoBehaviour
         }
 
         Vector3 target = center;
-        Debug.DrawLine(transform.position, target, Color.blue);
+        Debug.DrawLine(transform.position, target, new Color(25, 25, 25, 0.2f));
         return Seek(target, false);
     }
 

@@ -6,6 +6,7 @@ public class Settings : MonoBehaviour
 {
 
     public static Settings current;
+
     private void Awake()
     {
         current = this;

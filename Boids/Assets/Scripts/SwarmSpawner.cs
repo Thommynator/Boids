@@ -7,11 +7,9 @@ public class SwarmSpawner : MonoBehaviour
 {
     public GameObject boid;
 
-    public int swarmSize = 50;
-
     void Start()
     {
-        for (int i = 0; i < swarmSize; i++)
+        for (int i = 0; i < Settings.current.GetComponent<SwarmConfigurator>().swarmSize; i++)
         {
             Vector3 center = Settings.current.centerPosition;
 
