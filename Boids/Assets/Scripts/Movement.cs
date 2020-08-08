@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour
     public float maxSteeringForce;
 
     public bool isAvoidingWalls;
-    public bool isSeparatingFromOthers;
+    public bool isAvoidingOthers;
 
     private Vector3 steeringForce;
     private Rigidbody body;
@@ -38,7 +38,7 @@ public class Movement : MonoBehaviour
 
         body.AddForce(Seek(targetPosition, true));
 
-        if (isSeparatingFromOthers)
+        if (isAvoidingOthers)
         {
             body.AddForce(SeparateFromNeighbors());
         }

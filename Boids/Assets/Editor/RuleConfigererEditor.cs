@@ -16,9 +16,9 @@ public class RuleConfigererEditor : Editor
             config.ToggleAvoidWallsRule();
         }
 
-        if (GUILayout.Button("Separate"))
+        if (GUILayout.Button("Avoid Others"))
         {
-            config.ToggleSeparateFromOthersRule();
+            config.ToggleAvoidingOthersRule();
         }
     }
 }
