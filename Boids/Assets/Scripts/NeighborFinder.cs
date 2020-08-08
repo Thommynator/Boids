@@ -27,6 +27,11 @@ public class NeighborFinder : MonoBehaviour
         }
     }
 
+    public List<Transform> GetNeighbors()
+    {
+        return neighbors;
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = new Color(220, 220, 220, 0.5f);

@@ -21,6 +21,8 @@ public class SwarmSpawner : MonoBehaviour
 
             GameObject newBoid = Instantiate(boid, new Vector3(x, y, z), boid.transform.rotation);
             newBoid.transform.SetParent(this.transform);
+
+            newBoid.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(0.1f, 1), 0, Random.Range(0.1f, 1));
         }
     }
 
