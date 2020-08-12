@@ -15,7 +15,7 @@ public class SwarmConfigurator : MonoBehaviour
     [Range(0.0f, 30.0f)]
     public float maxSteeringForce;
 
-    [Range(0,30)]
+    [Range(0, 30)]
     public float neighborSearchRadius;
 
 
@@ -34,6 +34,9 @@ public class SwarmConfigurator : MonoBehaviour
     [Range(0.0f, 5.0f)]
     public float useCohesionScale;
     public bool isUsingCohesion = true;
+
+    public float avoidPredatorsScale;
+    public bool isAvoidingPredators;
 
     public GameObject swarm;
 }

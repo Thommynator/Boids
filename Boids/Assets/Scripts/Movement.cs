@@ -69,6 +69,10 @@ public class Movement : MonoBehaviour
         {
             body.AddForce(configurator.useCohesionScale * Cohesion());
         }
+        if (configurator.isAvoidingPredators)
+        {
+            body.AddForce(configurator.avoidPredatorsScale * AvoidPredators());
+        }
     }
 
     private Vector3 StraightWalkOffset()
@@ -184,8 +188,19 @@ public class Movement : MonoBehaviour
         }
 
         Vector3 target = center;
-        Debug.DrawLine(transform.position, target, new Color(25, 25, 25, 0.2f));
+        Debug.DrawLine(transform.position, target, new Color(25, 25, 25, 0.5f));
         return Seek(target, false);
+    }
+
+
+    private Vector3 AvoidPredators()
+    {
+        List<Transform> predators = GetComponent<NeighborFinder>().GetPredators();
+        if (predators.Count == 0)
+        {
+            return Vector3.zero;
+        }
+        return -Seek(predators[0].position, false);
     }
 
     private Vector3 Seek(Vector3 target, bool approachSlowly)

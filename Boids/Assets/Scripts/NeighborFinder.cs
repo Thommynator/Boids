@@ -6,6 +6,8 @@ public class NeighborFinder : MonoBehaviour
 {
     public List<Transform> neighbors;
 
+    public List<Transform> predators;
+
     private SwarmConfigurator configurator;
 
     void Start()
@@ -17,19 +19,32 @@ public class NeighborFinder : MonoBehaviour
     void Update()
     {
         neighbors = new List<Transform>();
-        Collider[] otherBoids = Physics.OverlapSphere(transform.position, configurator.neighborSearchRadius);
-        foreach (var boid in otherBoids)
+        predators = new List<Transform>();
+
+        Collider[] surroundingObjects = Physics.OverlapSphere(transform.position, configurator.neighborSearchRadius);
+        foreach (var other in surroundingObjects)
         {
-            if (boid.gameObject.layer == LayerMask.NameToLayer("Boids") && boid.gameObject != this.gameObject)
+            if (other.gameObject.layer == LayerMask.NameToLayer("Boids") && other.gameObject != this.gameObject)
             {
-                neighbors.Add(boid.transform);
+                neighbors.Add(other.transform);
             }
+
+            if (other.gameObject.layer == LayerMask.NameToLayer("Predators") && other.gameObject != this.gameObject)
+            {
+                predators.Add(other.transform);
+            }
+
         }
     }
 
     public List<Transform> GetNeighbors()
     {
         return neighbors;
+
+    }
+    public List<Transform> GetPredators()
+    {
+        return predators;
     }
 
     void OnDrawGizmosSelected()
