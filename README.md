@@ -11,7 +11,7 @@ The rules are:
 All rules can be dynamically weighted and toggled, while the simulation is running.
 
 ### Demo
-TODO: Add video
+![](demo.png)
 
 ### Further Reading
 The project was inspired by:
