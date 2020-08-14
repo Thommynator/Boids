@@ -201,7 +201,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0db69b51d3b9241bd9144da325ff85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skipInterval: 5
   neighbors: []
+  predators: []
 --- !u!114 &114533993290387292
 MonoBehaviour:
   m_ObjectHideFlags: 0

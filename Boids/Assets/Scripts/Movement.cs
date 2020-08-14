@@ -138,7 +138,7 @@ public class Movement : MonoBehaviour
 
         foreach (var neighbor in neighbors)
         {
-            float scale = (transform.position - neighbor.position).magnitude;
+            float scale = (transform.position - neighbor.position).sqrMagnitude;
             separationVector += ((transform.position - neighbor.position).normalized) / scale;
         }
 
@@ -168,7 +168,7 @@ public class Movement : MonoBehaviour
         }
 
         Vector3 target = transform.position + averageVelocity;
-        Debug.DrawLine(transform.position, target, Color.green);
+        Debug.DrawLine(transform.position, target, new Color(0, 200, 0, 0.5f));
         return Seek(target, false);
     }
 
@@ -209,10 +209,10 @@ public class Movement : MonoBehaviour
         Vector3 limitedVelocity;
 
         // slow down, when close enough to the target
-        float distanceToTarget = desiredVelocity.magnitude;
-        if (approachSlowly && distanceToTarget < slowDownDistance)
+        float sqrDistanceToTarget = desiredVelocity.sqrMagnitude;
+        if (approachSlowly && sqrDistanceToTarget < slowDownDistance * slowDownDistance)
         {
-            float variableSpeed = map(distanceToTarget, 0, slowDownDistance, 0, maxSpeed);
+            float variableSpeed = map(sqrDistanceToTarget, 0, slowDownDistance * slowDownDistance, 0, maxSpeed);
             limitedVelocity = desiredVelocity.normalized * variableSpeed;
         }
         // otherwise go with maximal speed

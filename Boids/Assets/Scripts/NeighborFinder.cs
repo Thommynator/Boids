@@ -10,30 +10,37 @@ public class NeighborFinder : MonoBehaviour
 
     private SwarmConfigurator configurator;
 
+    // check for neighbors only every n frames
+    private int skipInterval;
+
     void Start()
     {
+        skipInterval = 10;
         neighbors = new List<Transform>();
         configurator = Settings.current.GetComponent<SwarmConfigurator>();
     }
 
     void Update()
     {
-        neighbors = new List<Transform>();
-        predators = new List<Transform>();
-
-        Collider[] surroundingObjects = Physics.OverlapSphere(transform.position, configurator.neighborSearchRadius);
-        foreach (var other in surroundingObjects)
+        if (Time.frameCount % skipInterval == 0)
         {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Boids") && other.gameObject != this.gameObject)
-            {
-                neighbors.Add(other.transform);
-            }
+            neighbors = new List<Transform>();
+            predators = new List<Transform>();
 
-            if (other.gameObject.layer == LayerMask.NameToLayer("Predators") && other.gameObject != this.gameObject)
+            Collider[] surroundingObjects = Physics.OverlapSphere(transform.position, configurator.neighborSearchRadius);
+            foreach (var other in surroundingObjects)
             {
-                predators.Add(other.transform);
-            }
+                if (other.gameObject.layer == LayerMask.NameToLayer("Boids") && other.gameObject != this.gameObject)
+                {
+                    neighbors.Add(other.transform);
+                }
 
+                if (other.gameObject.layer == LayerMask.NameToLayer("Predators") && other.gameObject != this.gameObject)
+                {
+                    predators.Add(other.transform);
+                }
+
+            }
         }
     }
 
