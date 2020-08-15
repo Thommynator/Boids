@@ -1,10 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SwarmConfigurator : MonoBehaviour
 {
 
+    public GameObject textfieldObject;
+
+    private TextMeshProUGUI textfield;
+
+    public void Start()
+    {
+        textfield = textfieldObject.GetComponent<TextMeshProUGUI>();
+    }
 
     [Range(1, 1000)]
     public int swarmSize;
@@ -42,20 +51,47 @@ public class SwarmConfigurator : MonoBehaviour
     public void SetMaxSpeed(float maxSpeed)
     {
         this.maxSpeed = maxSpeed;
+        textfield.SetText("Max Speed :" + maxSpeed);
     }
 
     public void SetMaxSteeringForce(float maxSteeringForce)
     {
         this.maxSteeringForce = maxSteeringForce;
+        textfield.SetText("Max Steering :" + maxSteeringForce);
     }
 
     public void setNeighborSearchRadius(float neighborSearchRadius)
     {
         this.neighborSearchRadius = neighborSearchRadius;
+        textfield.SetText("Search Radius :" + neighborSearchRadius);
     }
 
     public void setAvoidWallsScale(float avoidWallsScale)
     {
         this.avoidWallsScale = avoidWallsScale;
+        textfield.SetText("Avoid Walls Scale:" + avoidWallsScale);
+    }
+
+    public void setAvoidNeighborsScale(float avoidNeighborsScale)
+    {
+        this.avoidNeighborsScale = avoidNeighborsScale;
+        textfield.SetText("Avoid Neighbors Scale:" + avoidNeighborsScale);
+    }
+    public void setAlignWithNeighborsScale(float alignWithNeighborsScale)
+    {
+        this.alignWithNeighborsScale = alignWithNeighborsScale;
+        textfield.SetText("Align Neighbors Scale:" + alignWithNeighborsScale);
+    }
+
+    public void setCohesionScale(float cohesionScale)
+    {
+        this.useCohesionScale = cohesionScale;
+        textfield.SetText("Cohesion Scale:" + string.Format("{0:0.##}", cohesionScale));
+    }
+
+    public void setAvoidPredatorsScale(float avoidPredatorsScale)
+    {
+        this.avoidPredatorsScale = avoidPredatorsScale;
+        textfield.SetText("Avoid Predators Scale:" + avoidPredatorsScale);
     }
 }
