@@ -11,6 +11,8 @@ The rules are:
 All rules can be dynamically weighted and toggled, while the simulation is running.
 
 ### Demo
+[Run it in your browser](https://thommynator.github.io/Boids/) (ℹ It's a little laggy in the browser.)
+
 ![](docs/demo.png)
 
 ### Further Reading
