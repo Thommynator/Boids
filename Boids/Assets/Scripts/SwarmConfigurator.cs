@@ -18,7 +18,6 @@ public class SwarmConfigurator : MonoBehaviour
     [Range(0, 30)]
     public float neighborSearchRadius;
 
-
     [Range(0.0f, 5.0f)]
     public float avoidWallsScale;
     public bool isAvoidingWalls = true;
@@ -39,4 +38,24 @@ public class SwarmConfigurator : MonoBehaviour
     public bool isAvoidingPredators;
 
     public GameObject swarm;
+
+    public void SetMaxSpeed(float maxSpeed)
+    {
+        this.maxSpeed = maxSpeed;
+    }
+
+    public void SetMaxSteeringForce(float maxSteeringForce)
+    {
+        this.maxSteeringForce = maxSteeringForce;
+    }
+
+    public void setNeighborSearchRadius(float neighborSearchRadius)
+    {
+        this.neighborSearchRadius = neighborSearchRadius;
+    }
+
+    public void setAvoidWallsScale(float avoidWallsScale)
+    {
+        this.avoidWallsScale = avoidWallsScale;
+    }
 }
