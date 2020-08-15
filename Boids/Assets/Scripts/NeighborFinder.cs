@@ -27,19 +27,30 @@ public class NeighborFinder : MonoBehaviour
             neighbors = new List<Transform>();
             predators = new List<Transform>();
 
-            Collider[] surroundingObjects = Physics.OverlapSphere(transform.position, configurator.neighborSearchRadius);
-            foreach (var other in surroundingObjects)
+            // find Boids
+            int boidsLayerMask = 1 << LayerMask.NameToLayer("Boids");
+            Collider[] surroundingBoids = Physics.OverlapSphere(transform.position, configurator.neighborSearchRadius, boidsLayerMask);
+            foreach (var boid in surroundingBoids)
             {
-                if (other.gameObject.layer == LayerMask.NameToLayer("Boids") && other.gameObject != this.gameObject)
+                if (boid.gameObject != this.gameObject)
                 {
-                    neighbors.Add(other.transform);
+                    neighbors.Add(boid.transform);
                 }
+            }
 
-                if (other.gameObject.layer == LayerMask.NameToLayer("Predators") && other.gameObject != this.gameObject)
+            // find Predators
+            int lowerRangelimit = 10;
+            int upperRangelimit = 40;
+            // radius depends on neighbor radius, but is limited between [lowerRangelimit, upperRangelimit]
+            float predatorAwarenessRadius = Mathf.Min(upperRangelimit, Mathf.Max(lowerRangelimit, 1.5f * configurator.neighborSearchRadius));
+            int predatorsLayerMask = 1 << LayerMask.NameToLayer("Predators");
+            Collider[] surroundingPredators = Physics.OverlapSphere(transform.position, predatorAwarenessRadius, predatorsLayerMask);
+            foreach (var predator in surroundingPredators)
+            {
+                if (predator.gameObject != this.gameObject)
                 {
-                    predators.Add(other.transform);
+                    predators.Add(predator.transform);
                 }
-
             }
         }
     }

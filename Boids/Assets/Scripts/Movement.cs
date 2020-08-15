@@ -5,26 +5,16 @@ using static Settings;
 
 public class Movement : MonoBehaviour
 {
+    protected float maxSpeed;
+    protected float maxSteeringForce;
 
-    // defines how fast a Boid can steer (change direction)
-    public float maxSteeringForce;
-
-    public bool isAvoidingWalls;
-    public bool isAvoidingOthers;
-    public bool isAligningWithOthers;
-    public bool isUsingCohesion;
-
-    private float maxSpeed;
-    private Vector3 steeringForce;
-    private Vector3 velocityDifference;
-
-    private Rigidbody body;
+    protected Rigidbody body;
 
     private Vector3 targetPosition = Vector3.zero;
 
 
     // distance around target within the boid starts to slow down (approach target)
-    private float slowDownDistance = 10f;
+    protected float slowDownDistance = 10f;
 
     private GameObject swarm;
 
@@ -75,12 +65,12 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private Vector3 StraightWalkOffset()
+    protected Vector3 StraightWalkOffset()
     {
         return body.velocity.normalized * maxSpeed;
     }
 
-    private Vector3 AvoidWalls()
+    protected Vector3 AvoidWalls()
     {
         bool isOutside = false;
         float offset = 1f;
@@ -203,7 +193,7 @@ public class Movement : MonoBehaviour
         return -Seek(predators[0].position, false);
     }
 
-    private Vector3 Seek(Vector3 target, bool approachSlowly)
+    protected Vector3 Seek(Vector3 target, bool approachSlowly)
     {
         Vector3 desiredVelocity = target - transform.position;
         Vector3 limitedVelocity;
@@ -220,35 +210,13 @@ public class Movement : MonoBehaviour
         {
             limitedVelocity = desiredVelocity.normalized * maxSpeed;
         }
-
-        velocityDifference = limitedVelocity - body.velocity;
-        steeringForce = Vector3.ClampMagnitude(velocityDifference, maxSteeringForce);
-        return steeringForce;
+        return Vector3.ClampMagnitude(limitedVelocity - body.velocity, maxSteeringForce);
     }
 
-    private float map(float value, float from1, float to1, float from2, float to2)
+    protected float map(float value, float from1, float to1, float from2, float to2)
     {
         return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
     }
-
-    // void OnDrawGizmosSelected()
-    // {
-    //     // actual velocity
-    //     drawLineHelper(transform.position, transform.position + body.velocity, new Color(0, 0, 220), 15);
-
-    //     // velocity difference
-    //     drawLineHelper(transform.position, transform.position + velocityDifference, new Color(220, 220, 220, 0.5f), 15);
-
-    //     // steering
-    //     drawLineHelper(transform.position, transform.position + steeringForce, new Color(0, 220, 0, 0.5f), 5);
-
-    //     Gizmos.DrawWireSphere(targetPosition, slowDownDistance);
-    // }
-
-    // private void drawLineHelper(Vector3 startPos, Vector3 endPos, Color color, float thickness)
-    // {
-    //     UnityEditor.Handles.DrawBezier(startPos, endPos, startPos, endPos, color, null, thickness);
-    // }
 
     private Vector3 GetMousePosition()
     {
@@ -259,7 +227,12 @@ public class Movement : MonoBehaviour
         {
             // some point of the plane was hit - get its coordinates
             var hitPoint = ray.GetPoint(distance);
-            return new Vector3(hitPoint.x, 0, hitPoint.z);
+            Vector3 position = new Vector3(hitPoint.x, 0, hitPoint.z);
+
+            // GameObject sphere = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere));
+            // sphere.transform.position = position;
+            // Destroy(sphere, 0.1f);
+            return position;
         }
         return Vector3.zero;
     }

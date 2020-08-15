@@ -15,8 +15,11 @@ public class SwarmConfigurator : MonoBehaviour
         textfield = textfieldObject.GetComponent<TextMeshProUGUI>();
     }
 
-    [Range(1, 1000)]
+    [Range(1, 300)]
     public int swarmSize;
+
+    [Range(1, 10)]
+    public int predatorSize;
 
     [Range(0.0f, 30.0f)]
     public float maxSpeed;
