@@ -10,9 +10,6 @@ public class Settings : MonoBehaviour
     private void Awake()
     {
         current = this;
-        Debug.Log("X | Min: " + GetMinPosition(Dimension.X) + ", Max: " + GetMaxPosition(Dimension.X));
-        Debug.Log("Y | Min: " + GetMinPosition(Dimension.Y) + ", Max: " + GetMaxPosition(Dimension.Y));
-        Debug.Log("Z | Min: " + GetMinPosition(Dimension.Z) + ", Max: " + GetMaxPosition(Dimension.Z));
     }
 
     public Vector3 moveableSpace;

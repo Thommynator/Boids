@@ -231,24 +231,24 @@ public class Movement : MonoBehaviour
         return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
     }
 
-    void OnDrawGizmosSelected()
-    {
-        // actual velocity
-        drawLineHelper(transform.position, transform.position + body.velocity, new Color(0, 0, 220), 15);
+    // void OnDrawGizmosSelected()
+    // {
+    //     // actual velocity
+    //     drawLineHelper(transform.position, transform.position + body.velocity, new Color(0, 0, 220), 15);
 
-        // velocity difference
-        drawLineHelper(transform.position, transform.position + velocityDifference, new Color(220, 220, 220, 0.5f), 15);
+    //     // velocity difference
+    //     drawLineHelper(transform.position, transform.position + velocityDifference, new Color(220, 220, 220, 0.5f), 15);
 
-        // steering
-        drawLineHelper(transform.position, transform.position + steeringForce, new Color(0, 220, 0, 0.5f), 5);
+    //     // steering
+    //     drawLineHelper(transform.position, transform.position + steeringForce, new Color(0, 220, 0, 0.5f), 5);
 
-        Gizmos.DrawWireSphere(targetPosition, slowDownDistance);
-    }
+    //     Gizmos.DrawWireSphere(targetPosition, slowDownDistance);
+    // }
 
-    private void drawLineHelper(Vector3 startPos, Vector3 endPos, Color color, float thickness)
-    {
-        UnityEditor.Handles.DrawBezier(startPos, endPos, startPos, endPos, color, null, thickness);
-    }
+    // private void drawLineHelper(Vector3 startPos, Vector3 endPos, Color color, float thickness)
+    // {
+    //     UnityEditor.Handles.DrawBezier(startPos, endPos, startPos, endPos, color, null, thickness);
+    // }
 
     private Vector3 GetMousePosition()
     {
