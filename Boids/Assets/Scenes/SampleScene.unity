@@ -455,7 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92712561d4db25440992a8ad623e5c19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swarmSize: 250
+  swarmSize: 150
   maxSpeed: 20
   maxSteeringForce: 15
   neighborSearchRadius: 10
